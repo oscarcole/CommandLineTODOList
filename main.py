@@ -8,7 +8,7 @@ class DataManager:
         self.data = self.load_data()
 
 
-    # loads json file
+    # loads in json file for stand-alone access when needed
     def load_data(self):
         with open(self.file_path,'r') as file:
             return json.load(file)
@@ -36,6 +36,7 @@ class DataManager:
             json.dump(self.data, file, indent=4)
 
 
+
 class Record:
     @staticmethod
     def create_new(id_number, todo_task, mark_completed):
@@ -49,5 +50,44 @@ class Record:
         pass
 
 
+# contains the "navigation and actions" for the to-do list
+class Menu:
+    def __init__(self, data_manager):
+        self.data_manager = data_manager
+
+    def display_menu(self):
+        print(f"\n**Menu**")
+        print(f"1. Add a new task")
+        print(f"2. Edit a task")
+        print(f"3. Mark a task completed")
+        print(f"4. Delete a task")
+        print(f"5. Exit")
+
+        while True:
+            try:
+                user_choice = int(input("What would you like to do? "))
+
+                if user_choice == 1:
+                    Record.create_new(4, "Do a thing", False) # user will need to be prompted, otherwise they will not know what to type in.
+                elif user_choice == 2:
+                    print("Editing a task -- Feature coming soon")
+                elif user_choice == 3:
+                    print("Marking a task 'complete' -- Feature coming soon")
+                elif user_choice == 4:
+                    print("Deleting a task -- Feature coming soon")
+                else:
+                    print("Invalid choice, please try again")
+
+                if 1 <= user_choice <= 5:
+                    return user_choice
+                else:
+                    print("Invalid number, please enter a number between 1 and 5.")
+            except ValueError:
+                print("Invalid input, please enter a number.")
+
+
 data_manager = DataManager()
 print(data_manager.format_todos())
+
+menu = Menu(data_manager)
+menu.display_menu()
