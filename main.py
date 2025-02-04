@@ -1,6 +1,8 @@
 import json
 from tabulate import tabulate
 
+
+
 # manages the loading, saving, and posting all records
 class DataManager:
     def __init__(self):
@@ -12,6 +14,10 @@ class DataManager:
     def load_data(self):
         with open(self.file_path,'r') as file:
             return json.load(file)
+
+    # displays all records
+    def display_todos(self):
+        print(self.format_todos())  # Just prints the formatted list
 
 
     def format_todos(self):
@@ -38,9 +44,10 @@ class DataManager:
 
 
 class Record:
-    @staticmethod
-    def create_new():
-        cn_data_manager = DataManager()
+    def __init__(self, data_manager):
+        self.data_manager = data_manager
+
+    def create_new(self):
 
         task = input("Enter the task description: ").strip()
 
@@ -51,16 +58,20 @@ class Record:
                 break
             else:
                 print("Invalid input. Please enter 'Y' or 'N'.")
-        new_id = len(cn_data_manager.data) + 1
+        new_id = len(self.data_manager.data) + 1
 
-        cn_data_manager.save_data(new_id, task, completed)
+        self.data_manager.save_data(new_id, task, completed)
         print(f"New task added successfully! ID: {new_id}")
 
     def edit_record(self):
-        pass
+        print(f"Here is your current TODO list, what would you like to edit?:")
+        print(self.data_manager.format_todos())
+
+
 
     def delete_record(self):
         pass
+
 
 
 # contains the "navigation and actions" for the to-do list
@@ -81,15 +92,18 @@ class Menu:
                 user_choice = int(input("What would you like to do? "))
 
                 if user_choice == 1:
-                    Record.create_new()
+                    record = Record(self.data_manager)
+                    record.create_new()
                 elif user_choice == 2:
-                    print("Editing a task -- Feature coming soon")
+                    record = Record(self.data_manager)
+                    record.edit_record()
                 elif user_choice == 3:
                     print("Marking a task 'complete' -- Feature coming soon")
                 elif user_choice == 4:
                     print("Deleting a task -- Feature coming soon")
                 else:
                     print("Invalid choice, please try again")
+
 
                 if 1 <= user_choice <= 5:
                     return user_choice
@@ -99,8 +113,12 @@ class Menu:
                 print("Invalid input, please enter a number.")
 
 
-data_manager = DataManager()
-print(data_manager.format_todos())
 
+data_manager = DataManager()
+data_manager.display_todos()
+
+
+
+data_manager = DataManager()
 menu = Menu(data_manager)
 menu.display_menu()
