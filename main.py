@@ -39,9 +39,22 @@ class DataManager:
 
 class Record:
     @staticmethod
-    def create_new(id_number, todo_task, mark_completed):
+    def create_new():
         cn_data_manager = DataManager()
-        cn_data_manager.save_data(id_number, todo_task, mark_completed)
+
+        task = input("Enter the task description: ").strip()
+
+        while True:
+            completed_input = input("Is this task completed? Y/N:").strip().lower()
+            if completed_input in ["y", "n"]:
+                completed = True if completed_input =="y" else False
+                break
+            else:
+                print("Invalid input. Please enter 'Y' or 'N'.")
+        new_id = len(cn_data_manager.data) + 1
+
+        cn_data_manager.save_data(new_id, task, completed)
+        print(f"New task added successfully! ID: {new_id}")
 
     def edit_record(self):
         pass
@@ -68,7 +81,7 @@ class Menu:
                 user_choice = int(input("What would you like to do? "))
 
                 if user_choice == 1:
-                    Record.create_new(4, "Do a thing", False) # user will need to be prompted, otherwise they will not know what to type in.
+                    Record.create_new()
                 elif user_choice == 2:
                     print("Editing a task -- Feature coming soon")
                 elif user_choice == 3:
