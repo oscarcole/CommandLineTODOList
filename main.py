@@ -10,7 +10,7 @@ class DataManager:
         self.data = self.load_data()
 
 
-    # loads in json file for stand-alone access when needed
+    # loads in JSON file for stand-alone access when needed
     def load_data(self):
         with open(self.file_path,'r') as file:
             return json.load(file)
@@ -27,13 +27,13 @@ class DataManager:
         ]
         return tabulate(formatted_data, headers=["ID", "Status", "Task"], tablefmt="rounded_grid")
 
-    # writes to json file
+    # writes to JSON file
     def save_to_file(self):
         with open(self.file_path, 'w') as file:
             json.dump(self.data, file, indent=4)
 
 
-    # saves json file
+    # saves JSON file
     def save_data(self, id_number, todo_task, mark_completed):
         new_data = {"id": id_number,
                     "task": todo_task,
@@ -42,7 +42,6 @@ class DataManager:
         # appends new data before writing
         self.data.append(new_data)
 
-
         DataManager.save_to_file()
 
 
@@ -50,6 +49,7 @@ class Record:
     def __init__(self, data_manager):
         self.data_manager = data_manager
 
+    # Creates a new record in the JSON file
     def create_new(self):
 
         task = input("Enter the task description: ").strip()
@@ -66,6 +66,7 @@ class Record:
         self.data_manager.save_data(new_id, task, completed)
         print(f"New task added successfully! ID: {new_id}")
 
+    # marks record in JSON file as completed/True
     def mark_complete(self):
         print(f"Here is your current TODO list, what would you like to mark complete?:")
         data_manager.display_todos()
@@ -85,7 +86,7 @@ class Record:
 
         print(f"{user_choice} is not in the to-do list.")
 
-
+    # removes record from JSON file
     def delete_record(self):
         print(f"Here is your current TODO list, what record would you like to delete?:")
         data_manager.display_todos()
