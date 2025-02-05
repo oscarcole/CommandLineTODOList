@@ -42,7 +42,7 @@ class DataManager:
         # appends new data before writing
         self.data.append(new_data)
 
-        DataManager.save_to_file()
+        self.save_to_file()
 
 
 class Record:
@@ -51,16 +51,8 @@ class Record:
 
     # Creates a new record in the JSON file
     def create_new(self):
-
         task = input("Enter the task description: ").strip()
-
-        while True:
-            completed_input = input("Is this task completed? Y/N:").strip().lower()
-            if completed_input in ["y", "n"]:
-                completed = True if completed_input =="y" else False
-                break
-            else:
-                print("Invalid input. Please enter 'Y' or 'N'.")
+        completed = False
         new_id = len(self.data_manager.data) + 1
 
         self.data_manager.save_data(new_id, task, completed)
@@ -147,3 +139,4 @@ data_manager.display_todos()
 data_manager = DataManager()
 menu = Menu(data_manager)
 menu.display_menu()
+
