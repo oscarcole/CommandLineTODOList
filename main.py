@@ -27,6 +27,11 @@ class DataManager:
         ]
         return tabulate(formatted_data, headers=["ID", "Status", "Task"], tablefmt="rounded_grid")
 
+    # writes to json file
+    def save_to_file(self):
+        with open(self.file_path, 'w') as file:
+            json.dump(self.data, file, indent=4)
+
 
     # saves json file
     def save_data(self, id_number, todo_task, mark_completed):
@@ -37,10 +42,8 @@ class DataManager:
         # appends new data before writing
         self.data.append(new_data)
 
-        # writes to json file
-        with open(self.file_path, 'w') as file:
-            json.dump(self.data, file, indent=4)
 
+        DataManager.save_to_file()
 
 
 class Record:
@@ -63,14 +66,37 @@ class Record:
         self.data_manager.save_data(new_id, task, completed)
         print(f"New task added successfully! ID: {new_id}")
 
-    def edit_record(self):
-        print(f"Here is your current TODO list, what would you like to edit?:")
-        print(self.data_manager.format_todos())
+    def mark_complete(self):
+        print(f"Here is your current TODO list, what would you like to mark complete?:")
+        data_manager.display_todos()
+        try:
+            user_choice = int(input())
+        except ValueError:
+            print("Invalid input, Please enter a number.")
+            return
 
+        for todo in self.data_manager.data:
+            if todo["id"] == user_choice:
+                todo["completed"] = True
+                self.data_manager.save_to_file()
+                print(f"Marking Task ID {user_choice} as complete!")
+                data_manager.display_todos()
+                return
+
+        print(f"{user_choice} is not in the to-do list.")
 
 
     def delete_record(self):
-        pass
+        print(f"Here is your current TODO list, what record would you like to delete?:")
+        data_manager.display_todos()
+        user_choice = int(input())
+        for todo in self.data_manager.data:
+            if todo["id"] == user_choice:
+                self.data_manager.data.remove(todo)
+                self.data_manager.save_to_file()
+                print(f"Removed Record ID: {user_choice}")
+                data_manager.display_todos()
+                return
 
 
 
@@ -82,10 +108,9 @@ class Menu:
     def display_menu(self):
         print(f"\n**Menu**")
         print(f"1. Add a new task")
-        print(f"2. Edit a task")
-        print(f"3. Mark a task completed")
-        print(f"4. Delete a task")
-        print(f"5. Exit")
+        print(f"2. Mark a task completed")
+        print(f"3. Delete a task")
+        print(f"4. Exit")
 
         while True:
             try:
@@ -96,11 +121,10 @@ class Menu:
                     record.create_new()
                 elif user_choice == 2:
                     record = Record(self.data_manager)
-                    record.edit_record()
+                    record.mark_complete()
                 elif user_choice == 3:
-                    print("Marking a task 'complete' -- Feature coming soon")
-                elif user_choice == 4:
-                    print("Deleting a task -- Feature coming soon")
+                    record = Record(self.data_manager)
+                    record.delete_record()
                 else:
                     print("Invalid choice, please try again")
 
