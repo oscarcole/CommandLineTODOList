@@ -86,8 +86,11 @@ class Record:
         for todo in self.data_manager.data:
             if todo["id"] == user_choice:
                 self.data_manager.data.remove(todo)
+                for index, new_todo in enumerate(self.data_manager.data, start=1):
+                    new_todo["id"] = index
                 self.data_manager.save_to_file()
                 print(f"Removed Record ID: {user_choice}")
+
                 data_manager.display_todos()
                 return
 
@@ -118,6 +121,9 @@ class Menu:
                 elif user_choice == 3:
                     record = Record(self.data_manager)
                     record.delete_record()
+                elif user_choice == 4:
+                    print(f"Quitting TODO list.")
+                    break
                 else:
                     print("Invalid choice, please try again")
 
