@@ -61,7 +61,7 @@ class Record:
     # marks record in JSON file as completed/True
     def mark_complete(self):
         print(f"Here is your current TODO list, what would you like to mark complete?:")
-        data_manager.display_todos()
+        self.data_manager.display_todos()
         try:
             user_choice = int(input())
         except ValueError:
@@ -73,7 +73,7 @@ class Record:
                 todo["completed"] = True
                 self.data_manager.save_to_file()
                 print(f"Marking Task ID {user_choice} as complete!")
-                data_manager.display_todos()
+                self.data_manager.display_todos()
                 return
 
         print(f"{user_choice} is not in the to-do list.")
@@ -81,7 +81,7 @@ class Record:
     # removes record from JSON file
     def delete_record(self):
         print(f"Here is your current TODO list, what record would you like to delete?:")
-        data_manager.display_todos()
+        self.data_manager.display_todos()
         user_choice = int(input())
         for todo in self.data_manager.data:
             if todo["id"] == user_choice:
