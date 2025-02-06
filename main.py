@@ -106,13 +106,14 @@ class Menu:
         self.data_manager = data_manager
 
     def display_menu(self):
-        print(f"\n**Menu**")
-        print(f"1. Add a new task")
-        print(f"2. Mark a task completed")
-        print(f"3. Delete a task")
-        print(f"4. Exit")
-
         while True:
+            print("\n**Menu**")
+            print("1. Add a new task")
+            print("2. Mark a task completed")
+            print("3. Delete a task")
+            print("4. Load TODO list")
+            print("5. Exit")
+
             try:
                 user_choice = int(input("What would you like to do? "))
 
@@ -126,18 +127,16 @@ class Menu:
                     record = Record(self.data_manager)
                     record.delete_record()
                 elif user_choice == 4:
-                    print(f"Quitting TODO list.")
+                    data_manager.load_data()
+                    data_manager.display_todos()
+                elif user_choice == 5:
+                    print("Quitting TODO list. Goodbye!")
                     break
                 else:
-                    print("Invalid choice, please try again")
+                    print("Invalid. Please enter a number between 1 and 4.")
 
-
-                if 1 <= user_choice <= 5:
-                    return user_choice
-                else:
-                    print("Invalid number, please enter a number between 1 and 5.")
             except ValueError:
-                print("Invalid input, please enter a number.")
+                print("Invalid. Please enter a number.")
 
 
 
