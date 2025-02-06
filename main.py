@@ -12,8 +12,12 @@ class DataManager:
 
     # loads in JSON file for stand-alone access when needed
     def load_data(self):
-        with open(self.file_path,'r') as file:
-            return json.load(file)
+        try:
+            with open(self.file_path,'r') as file:
+                return json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            print("No TODO list found. Creating a new one.")
+            return []
 
     # displays all records
     def display_todos(self):
